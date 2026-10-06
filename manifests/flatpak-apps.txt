@@ -1,0 +1,5 @@
+com.bitwarden.desktop
+com.discordapp.Discord
+com.ktechpit.whatsie
+io.github.nroduit.Weasis
+md.obsidian.Obsidian
