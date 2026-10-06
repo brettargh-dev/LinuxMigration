@@ -137,6 +137,27 @@ headers for (`6.8.0-146-generic`). Check with `uname -r`, then:
 
 ---
 
+## 📌 Post-migration to-do (do these *after* migration is finished)
+
+- [ ] **Set up real iCloud Drive sync via `rclone`.**
+      The `icloud-for-linux` snap is only a web wrapper (same as iCloud in a
+      browser) — it does **not** sync files to disk. For an actual synced folder:
+  - **First check:** iCloud **Advanced Data Protection (ADP)** must be **OFF** —
+        rclone cannot access iCloud Drive if ADP is enabled. (Dealbreaker if on.)
+  - Install rclone: `sudo -v ; curl https://rclone.org/install.sh | sudo bash`
+        (needs rclone **v1.69+**; iCloud Drive backend is current as of v1.75.x).
+  - Configure the remote: `rclone config` → new remote → type **`iclouddrive`**
+        → Apple ID + app-specific password / 2FA (saves a trust token that expires
+        periodically, so occasional re-auth is expected).
+  - Choose a mode:
+    - `rclone bisync` for **two-way** sync into a local folder (closest to native),
+    - `rclone sync` for a one-way mirror, or
+    - `rclone mount` to browse iCloud Drive as a folder on demand.
+  - Automate with a **systemd timer or cron** (it is not an always-on daemon).
+  - *When we do this, add an `rclone-icloud-setup.sh` to `app-restore/` to script it.*
+
+---
+
 ### Quick reference — what's on USB #2 (`LinuxMigration/`)
 | Path | Purpose | Step |
 |---|---|---|
